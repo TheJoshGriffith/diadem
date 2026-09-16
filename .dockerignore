@@ -1,0 +1,53 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+build
+.svelte-kit
+.output
+
+# Development files
+.vscode
+.idea
+*.log
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Testing
+coverage
+.nyc_output
+
+# Misc
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md
+*.md
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+
+
+
+# Local ops scripts
+harris-mariadb
+deploy/*.out

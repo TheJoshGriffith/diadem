@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>diadem</Name>
+  <Repository>ghcr.io/GHCR_OWNER/diadem:deploy</Repository>
+  <Registry>https://ghcr.io/</Registry>
+  <Network>pogo</Network>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/ccev/diadem/issues</Support>
+  <Overview>Next-gen pogo map frontend. Reads the golbat database and talks to golbat/dragonite/koji. Fronted by Nginx Proxy Manager; no published port needed when on a shared Docker network.</Overview>
+  <Category>Tools:</Category>
+  <WebUI>http://[IP]:[PORT:3000]/</WebUI>
+  <Icon>https://raw.githubusercontent.com/ccev/diadem/main/static/favicon.png</Icon>
+
+  <Config Name="Config dir" Target="/config" Default="/mnt/user/appdata/diadem" Mode="rw" Description="Holds config.toml for the array-heavy sections (mapStyles, uiconSets, permissions). Environment variables below override anything in it." Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/diadem</Config>
+  <Config Name="WebUI port" Target="3000" Default="3900" Mode="tcp" Description="Only needed if you are NOT fronting this with Nginx Proxy Manager on the same network." Type="Port" Display="always" Required="false" Mask="false"/>
+
+  <Config Name="Golbat URL" Target="DIADEM__SERVER__GOLBAT__URL" Default="http://golbat:9001" Description="" Type="Variable" Display="always" Required="true" Mask="false">http://golbat:9001</Config>
+  <Config Name="Golbat secret" Target="DIADEM__SERVER__GOLBAT__SECRET" Default="" Description="" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="Dragonite URL" Target="DIADEM__SERVER__DRAGONITE__URL" Default="http://dragonite:7272" Description="" Type="Variable" Display="always" Required="false" Mask="false">http://dragonite:7272</Config>
+  <Config Name="Dragonite secret" Target="DIADEM__SERVER__DRAGONITE__SECRET" Default="" Description="" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="Koji URL" Target="DIADEM__SERVER__KOJI__URL" Default="http://koji:8080" Description="" Type="Variable" Display="always" Required="false" Mask="false">http://koji:8080</Config>
+  <Config Name="Koji secret" Target="DIADEM__SERVER__KOJI__SECRET" Default="" Description="" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="Koji project" Target="DIADEM__SERVER__KOJI__PROJECTNAME" Default="reactmap" Description="" Type="Variable" Display="always" Required="false" Mask="false">reactmap</Config>
+
+  <Config Name="Scanner DB host" Target="DIADEM__SERVER__DB__HOST" Default="mariadb" Description="" Type="Variable" Display="always" Required="true" Mask="false">mariadb</Config>
+  <Config Name="Scanner DB name" Target="DIADEM__SERVER__DB__DATABASE" Default="golbat" Description="" Type="Variable" Display="always" Required="true" Mask="false">golbat</Config>
+  <Config Name="Scanner DB user" Target="DIADEM__SERVER__DB__USER" Default="diadem_ro" Description="Read-only user created by bootstrap-db.sh" Type="Variable" Display="always" Required="true" Mask="false">diadem_ro</Config>
+  <Config Name="Scanner DB password" Target="DIADEM__SERVER__DB__PASSWORD" Default="" Description="" Type="Variable" Display="always" Required="true" Mask="true"/>
+
+  <Config Name="Internal DB host" Target="DIADEM__SERVER__INTERNALDB__HOST" Default="mariadb" Description="" Type="Variable" Display="always" Required="true" Mask="false">mariadb</Config>
+  <Config Name="Internal DB name" Target="DIADEM__SERVER__INTERNALDB__DATABASE" Default="diadem" Description="" Type="Variable" Display="always" Required="true" Mask="false">diadem</Config>
+  <Config Name="Internal DB user" Target="DIADEM__SERVER__INTERNALDB__USER" Default="diadem" Description="" Type="Variable" Display="always" Required="true" Mask="false">diadem</Config>
+  <Config Name="Internal DB password" Target="DIADEM__SERVER__INTERNALDB__PASSWORD" Default="" Description="" Type="Variable" Display="always" Required="true" Mask="true"/>
+
+  <Config Name="Map name" Target="DIADEM__CLIENT__GENERAL__MAPNAME" Default="Diadem" Description="" Type="Variable" Display="always" Required="false" Mask="false">Diadem</Config>
+  <Config Name="Log level" Target="DIADEM__SERVER__LOG__LEVEL" Default="info" Description="" Type="Variable" Display="advanced" Required="false" Mask="false">info</Config>
+  <Config Name="Auto-migrate" Target="DIADEM_AUTO_MIGRATE" Default="true" Description="Apply internal schema migrations on start." Type="Variable" Display="advanced" Required="false" Mask="false">true</Config>
+</Container>
