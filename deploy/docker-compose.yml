@@ -1,0 +1,65 @@
+# Diadem on Harris.
+#   cd /mnt/user/appdata/diadem && docker compose up -d
+#
+# Secrets come from a .env file beside this one (see .env.example), so this
+# file stays safe to commit. Copy .env.example to .env and fill it in.
+
+services:
+  diadem:
+    image: ghcr.io/${GHCR_OWNER}/diadem:deploy
+    container_name: diadem
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      TZ: Europe/London
+
+      # --- scanner data (read-only user) ---
+      DIADEM__SERVER__DB__HOST: mariadb
+      DIADEM__SERVER__DB__PORT: "3306"
+      DIADEM__SERVER__DB__DATABASE: golbat
+      DIADEM__SERVER__DB__USER: diadem_ro
+      DIADEM__SERVER__DB__PASSWORD: ${DIADEM_SCANNER_DB_PASSWORD}
+
+      # --- Diadem's own schema (owner user, migrations run against this) ---
+      DIADEM__SERVER__INTERNALDB__HOST: mariadb
+      DIADEM__SERVER__INTERNALDB__PORT: "3306"
+      DIADEM__SERVER__INTERNALDB__DATABASE: diadem
+      DIADEM__SERVER__INTERNALDB__USER: diadem
+      DIADEM__SERVER__INTERNALDB__PASSWORD: ${DIADEM_INTERNAL_DB_PASSWORD}
+
+      # --- scanner stack, by container name on the pogo network ---
+      DIADEM__SERVER__GOLBAT__URL: http://golbat:9001
+      DIADEM__SERVER__GOLBAT__SECRET: ${GOLBAT_SECRET}
+      DIADEM__SERVER__DRAGONITE__URL: http://dragonite:7272
+      DIADEM__SERVER__DRAGONITE__SECRET: ${DRAGONITE_SECRET}
+      DIADEM__SERVER__KOJI__URL: http://koji:8080
+      DIADEM__SERVER__KOJI__SECRET: ${KOJI_SECRET}
+      DIADEM__SERVER__KOJI__PROJECTNAME: reactmap
+
+      # --- discord login (optional: set auth enabled=false to skip) ---
+      DIADEM__SERVER__AUTH__ENABLED: "true"
+      DIADEM__SERVER__AUTH__OPTIONAL: "true"
+      DIADEM__SERVER__AUTH__DISCORD__CLIENTID: ${DISCORD_CLIENT_ID}
+      DIADEM__SERVER__AUTH__DISCORD__CLIENTSECRET: ${DISCORD_CLIENT_SECRET}
+      DIADEM__SERVER__AUTH__DISCORD__REDIRECTURI: ${PUBLIC_URL}/login/discord/callback
+
+      # --- presentation ---
+      DIADEM__CLIENT__GENERAL__MAPNAME: ${MAP_NAME}
+      DIADEM__SERVER__LOG__LEVEL: info
+
+    volumes:
+      # config.toml here supplies the array-heavy sections (mapStyles,
+      # uiconSets, permissions). Everything above overrides it.
+      - /mnt/user/appdata/diadem:/config
+
+    # No published port: Nginx Proxy Manager reaches diadem:3000 over the
+    # pogo network. Uncomment only if you want to hit Harris directly.
+    # ports:
+    #   - "3900:3000"
+
+    networks:
+      - pogo
+
+networks:
+  pogo:
+    external: true

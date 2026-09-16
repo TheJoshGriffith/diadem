@@ -31,3 +31,4 @@ vite.config.ts.timestamp-*
 
 # Local ops scripts (contain credentials when run)
 harris-mariadb/
+deploy/.env
