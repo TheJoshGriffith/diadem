@@ -13,7 +13,12 @@ import { migrate } from 'drizzle-orm/mysql2/migrator';
 const cfg = parse(readFileSync('/app/config/config.toml', 'utf8'));
 const db = cfg?.server?.internalDb;
 if (!db?.host) { console.error('[migrate] server.internalDb not configured'); process.exit(1); }
-if (!existsSync('/app/drizzle')) { console.log('[migrate] no migrations bundled, skipping'); process.exit(0); }
+// The folder always exists; the journal is what tells us drizzle-kit actually
+// produced migrations at build time.
+if (!existsSync('/app/drizzle/meta/_journal.json')) {
+  console.log('[migrate] no migrations bundled, skipping');
+  process.exit(0);
+}
 
 const conn = await mysql.createConnection({
   host: db.host, port: db.port ?? 3306, user: db.user,

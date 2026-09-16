@@ -25,6 +25,9 @@ RUN pnpm build
 # Generate SQL migrations for the internal schema so drizzle-kit is not needed
 # at runtime. Non-fatal: migrate.mjs skips cleanly if this produced nothing.
 RUN pnpm drizzle-kit generate || echo "WARNING: drizzle-kit generate failed, image will ship without migrations"
+# Always present, so the runner stage COPY below cannot fail. migrate.mjs
+# skips cleanly when it is empty.
+RUN mkdir -p /app/drizzle
 
 # ---------- runtime ----------
 FROM node:22-alpine AS runner

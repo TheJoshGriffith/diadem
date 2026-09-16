@@ -27,6 +27,10 @@ clientId = ""
 clientSecret = ""
 redirectUri = "https://map.co/login/discord/callback"
 
+[server.log]
+level = "info"
+# file = "logs/diadem.log"  # Optional: uncomment to enable file logging
+
 [client.discord]
 serverLink = "https://discord.com/invite/VGgsQN2hYG"
 serverId = "1359028304128245934"
