@@ -13,6 +13,12 @@ services:
     environment:
       TZ: Europe/London
 
+      # REQUIRED. adapter-node cannot infer its public URL, and SvelteKit's CSRF
+      # check rejects every POST whose Origin header disagrees - with a 403
+      # raised before routing, so the app logs nothing at all. Must match how
+      # the browser reaches it, scheme and port included.
+      ORIGIN: ${ORIGIN:?set ORIGIN to the public URL, e.g. https://map.example.com}
+
       # --- scanner data (read-only user) ---
       DIADEM__SERVER__DB__HOST: ${DB_HOST:-mariadb}
       DIADEM__SERVER__DB__PORT: "${DB_PORT:-3306}"
