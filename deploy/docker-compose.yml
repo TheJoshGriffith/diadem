@@ -14,27 +14,27 @@ services:
       TZ: Europe/London
 
       # --- scanner data (read-only user) ---
-      DIADEM__SERVER__DB__HOST: mariadb
-      DIADEM__SERVER__DB__PORT: "3306"
-      DIADEM__SERVER__DB__DATABASE: golbat
+      DIADEM__SERVER__DB__HOST: ${DB_HOST:-mariadb}
+      DIADEM__SERVER__DB__PORT: "${DB_PORT:-3306}"
+      DIADEM__SERVER__DB__DATABASE: ${SCANNER_DB_NAME:-golbat}
       DIADEM__SERVER__DB__USER: diadem_ro
       DIADEM__SERVER__DB__PASSWORD: ${DIADEM_SCANNER_DB_PASSWORD}
 
       # --- Diadem's own schema (owner user, migrations run against this) ---
-      DIADEM__SERVER__INTERNALDB__HOST: mariadb
-      DIADEM__SERVER__INTERNALDB__PORT: "3306"
+      DIADEM__SERVER__INTERNALDB__HOST: ${DB_HOST:-mariadb}
+      DIADEM__SERVER__INTERNALDB__PORT: "${DB_PORT:-3306}"
       DIADEM__SERVER__INTERNALDB__DATABASE: diadem
       DIADEM__SERVER__INTERNALDB__USER: diadem
       DIADEM__SERVER__INTERNALDB__PASSWORD: ${DIADEM_INTERNAL_DB_PASSWORD}
 
       # --- scanner stack, by container name on the pogo network ---
-      DIADEM__SERVER__GOLBAT__URL: http://golbat:9001
+      DIADEM__SERVER__GOLBAT__URL: ${GOLBAT_URL:-http://golbat:9001}
       DIADEM__SERVER__GOLBAT__SECRET: ${GOLBAT_SECRET}
-      DIADEM__SERVER__DRAGONITE__URL: http://dragonite:7272
+      DIADEM__SERVER__DRAGONITE__URL: ${DRAGONITE_URL:-http://dragonite:7272}
       DIADEM__SERVER__DRAGONITE__SECRET: ${DRAGONITE_SECRET}
-      DIADEM__SERVER__KOJI__URL: http://koji:8080
+      DIADEM__SERVER__KOJI__URL: ${KOJI_URL:-http://koji:8080}
       DIADEM__SERVER__KOJI__SECRET: ${KOJI_SECRET}
-      DIADEM__SERVER__KOJI__PROJECTNAME: reactmap
+      DIADEM__SERVER__KOJI__PROJECTNAME: ${KOJI_PROJECT:-reactmap}
 
       # --- discord login (optional: set auth enabled=false to skip) ---
       DIADEM__SERVER__AUTH__ENABLED: "${AUTH_ENABLED:-true}"
