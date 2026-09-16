@@ -37,15 +37,15 @@ services:
       DIADEM__SERVER__KOJI__PROJECTNAME: reactmap
 
       # --- discord login (optional: set auth enabled=false to skip) ---
-      DIADEM__SERVER__AUTH__ENABLED: "true"
-      DIADEM__SERVER__AUTH__OPTIONAL: "true"
+      DIADEM__SERVER__AUTH__ENABLED: "${AUTH_ENABLED:-true}"
+      DIADEM__SERVER__AUTH__OPTIONAL: "${AUTH_OPTIONAL:-true}"
       DIADEM__SERVER__AUTH__DISCORD__CLIENTID: ${DISCORD_CLIENT_ID}
       DIADEM__SERVER__AUTH__DISCORD__CLIENTSECRET: ${DISCORD_CLIENT_SECRET}
       DIADEM__SERVER__AUTH__DISCORD__REDIRECTURI: ${PUBLIC_URL}/login/discord/callback
 
       # --- presentation ---
       DIADEM__CLIENT__GENERAL__MAPNAME: ${MAP_NAME}
-      DIADEM__SERVER__LOG__LEVEL: info
+      DIADEM__SERVER__LOG__LEVEL: ${LOG_LEVEL:-info}
 
     volumes:
       # config.toml here supplies the array-heavy sections (mapStyles,
