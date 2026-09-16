@@ -22,12 +22,12 @@ RUN chmod +x setup.sh && ./setup.sh
 
 RUN pnpm build
 
-# Generate SQL migrations for the internal schema so drizzle-kit is not needed
-# at runtime. Non-fatal: migrate.mjs skips cleanly if this produced nothing.
-RUN pnpm drizzle-kit generate || echo "WARNING: drizzle-kit generate failed, image will ship without migrations"
-# Always present, so the runner stage COPY below cannot fail. migrate.mjs
-# skips cleanly when it is empty.
-RUN mkdir -p /app/drizzle
+# Migrations are COMMITTED, not generated here. Generating per build gives each
+# image a fresh journal timestamp, and drizzle re-applies anything newer than
+# the last recorded migration - so a rebuild would try to CREATE TABLE over an
+# existing schema. Regenerate deliberately with `pnpm drizzle-kit generate`
+# and commit the result.
+RUN test -f /app/drizzle/meta/_journal.json || (echo "ERROR: drizzle/ missing from the build context" && exit 1)
 
 # ---------- runtime ----------
 FROM node:22-alpine AS runner
