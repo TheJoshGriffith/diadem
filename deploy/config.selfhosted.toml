@@ -1,0 +1,160 @@
+[server.golbat]
+url = "http://127.0.0.1:9001"
+secret = ""
+
+# Dragonite integration for scout
+[server.dragonite]
+url = "http://127.0.0.1:7272"
+secret = ""
+
+# Optional Koji integrtion. Uncomment to disable
+[server.koji]
+url = "http://127.0.0.1:8080"
+secret = "secret"
+projectName = "reactmap"
+
+# Optional nominatim integration. Uncomment to disable
+[server.nominatim]
+url = "http://127.0.0.1:500"
+basicAuth = ""
+
+[server.auth]
+enabled = true
+optional = true
+
+[server.auth.discord]
+clientId = ""
+clientSecret = ""
+redirectUri = "https://map.co/login/discord/callback"
+
+[server.log]
+level = "info"
+# file = "logs/diadem.log"  # Optional: uncomment to enable file logging
+
+[client.discord]
+serverLink = "https://discord.com/invite/VGgsQN2hYG"
+serverId = "1359028304128245934"
+
+# Permissions work by defining permission sets.
+# When a user fulfills every requirement in that set,
+# they will allow access to every configured feature,
+# only in the configured areas.
+#
+# User requirements:
+#   - everyone: bool
+#   - loggedIn: bool
+#   - guildId:  id
+#   - roleId:   id
+#
+# Allows access to:
+#   - areas:    name[]    (area name, as configured in koji)
+#   - features: feature[] (*, pokemon, gym, pokestop, station, weather, s2cell, scout)
+#
+# Below are some examples
+
+[server.db]
+host = "127.0.0.1"
+port = 3306
+database = "golbat"
+user = ""
+password = ""
+
+[server.internalDb]
+host = "127.0.0.1"
+port = 3306
+database = "diadem"
+user = ""
+password = ""
+
+# A private instance: everyone who can reach the map sees everything,
+# everywhere. No Koji areas referenced, so nothing depends on area names
+# matching. Tighten this once you know what you want.
+[[server.permissions]]
+everyone = true
+features = ["*"]
+
+# Example of scoping to your own Discord instead - replace the id, and set
+# everyone = false above:
+# [[server.permissions]]
+# guildId = "YOUR_GUILD_ID"
+# features = ["*"]
+
+[client.general]
+mapName = "Diadem"
+defaultLocale = "en"  # Only used in link previews, client locale is set based on user preference
+customHome = false  # If enabled, path / will show the config/Home.svelte component, so you can build your own homepage. The map can be found under /map
+
+### Map Styles
+
+[[client.mapStyles]]
+id = "positron"
+name = "Positron"
+url = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+default = "light"
+
+[[client.mapStyles]]
+id = "dark"
+name = "Dark"
+url = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+default = "dark"
+
+[[client.mapStyles]]
+id = "voyager"
+name = "Voyager"
+url = "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
+
+### UICON Sets
+
+[[client.uiconSets]]
+id = "DEFAULT"  # One DEFAULT is required, and it's intended to be this
+name = "GO"
+url = "https://raw.githubusercontent.com/WatWowMap/wwm-uicons/main/"
+
+base = { scale = 0.5 }
+gym = { offsetY = -41 }
+raid_pokemon = { scale = 1.2, offsetY = -50 }
+raid_pokemon_6 = { scale = 1.2, offsetY = -120 }
+raid_egg = { scale = 0.17, offsetY = -120 }
+raid_egg_6 = { scale = 0.17, offsetY = -230 }
+
+[[client.uiconSets]]
+id = "pogoOutline"
+name = "GO"
+url = "https://raw.githubusercontent.com/whiFtewillem/PogoAssets/refs/heads/main/uicons-outline/"
+
+base = { scale = 0.5 }
+pokemon = { default = true, scale = 0.4 }
+gym = { default = true, offsetY = -26, offsetX = -14 }
+raid_pokemon = { scale = 0.8, offsetX = -11, offsetY = -30 }
+raid_egg = { scale = 0.24, offsetX = -25, offsetY = -40 }
+
+[[client.uiconSets]]
+id = "home"
+name = "Home"
+url = "https://raw.githubusercontent.com/nileplumb/PkmnHomeIcons/master/UICONS_OS_128/"
+
+base = { scale = 0.25 }
+pokemon = true
+pokestop = true
+
+[[client.uiconSets]]
+id = "shuffle"
+name = "Shuffle"
+url = "https://raw.githubusercontent.com/nileplumb/PkmnShuffleMap/master/UICONS/"
+
+base = { scale = 0.09 }
+pokemon = { scale = 0.5 }
+pokestop = { default = true, offsetY = -25, scale = 0.5 }
+station = { default = true, offsetY = -25, scale = 0.5 }
+quest = { scale = 0.4, offsetX = -40, offsetY = -40, spacing = 60 }
+invasion = { scale = 0.35, offsetX = 40, offsetY = -44, spacing = 60 }
+max_battle = { scale = 0.4, offsetY = -50 }
+
+[[client.uiconSets]]
+id = "shuffleShiny"
+name = "Shiny"
+url = "https://raw.githubusercontent.com/jms412/PkmnShuffleMap/master/UICONS_Half_Shiny_128/"
+
+base = { scale = 0.25 }
+pokemon = true
+
