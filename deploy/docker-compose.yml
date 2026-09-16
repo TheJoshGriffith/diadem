@@ -52,10 +52,12 @@ services:
       # uiconSets, permissions). Everything above overrides it.
       - /mnt/user/appdata/diadem:/config
 
-    # No published port: Nginx Proxy Manager reaches diadem:3000 over the
-    # pogo network. Uncomment only if you want to hit Harris directly.
-    # ports:
-    #   - "3900:3000"
+    # NPM reaches diadem:3000 over the pogo network and needs nothing published.
+    # HOST_PORT is here for direct access while testing. Set it to a loopback
+    # form like 127.0.0.1:3900 to keep it off the LAN, or drop publishing
+    # entirely with a docker-compose.override.yml that sets `ports: []`.
+    ports:
+      - "${HOST_PORT:-3900}:3000"
 
     networks:
       - pogo
