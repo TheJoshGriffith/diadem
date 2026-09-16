@@ -13,18 +13,26 @@ export async function fetchKojiGeofences(thisFetch?: typeof fetch) {
 		}
 	}
 
-	const url = config.koji.url + '/api/v1/geofence/FeatureCollection/' + config.koji.projectName;
-	const response = await (thisFetch ?? fetch)(url, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${config.koji.secret}`,
-			'Content-Type': 'application/json'
-		}
-	});
+	try {
+		const url = config.koji.url + '/api/v1/geofence/FeatureCollection/' + config.koji.projectName;
+		const response = await (thisFetch ?? fetch)(url, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${config.koji.secret}`,
+				'Content-Type': 'application/json'
+			}
+		});
 
-	const data = await response.json();
-	return {
-		error: data.data ? '' : data.message,
-		result: data?.data?.features || {}
-	};
+		const data = await response.json();
+		return {
+			error: data.data ? '' : data.message,
+			result: data?.data?.features || {}
+		};
+	} catch (error) {
+		log.warning(`Failed to fetch Koji geofences: ${error instanceof Error ? error.message : String(error)}`);
+		return {
+			error: error instanceof Error ? error.message : String(error),
+			result: {}
+		};
+	}
 }
